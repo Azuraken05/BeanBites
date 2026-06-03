@@ -109,8 +109,8 @@
             // Optional registration toast / alert before shipping them back
             alert("Account registered successfully!");
             
-            // Redirect straight back to your root login screen path
-            window.location.href = "/";
+        // Change it to route them right into your dashboard layout on signup click instead:
+        window.location.href = "/dashboard";
         });
     </script>
 </body>

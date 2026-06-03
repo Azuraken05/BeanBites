@@ -32,7 +32,7 @@
                 <h2>Welcome Back</h2>
                 <p class="form-instruction">Sign in to your account</p>
 
-                <form id="loginForm" action="#" method="POST">
+                <form id="loginForm" action="javascript:void(0);">
                     @csrf
                     
                     <div class="input-group">
@@ -64,5 +64,15 @@
     </div>
 
     <script src="/js/login.js"></script>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', (e) => {
+            // Stop page from resetting instantly on form submit check
+            e.preventDefault();
+            
+            // Redirect right into your root dashboard path rule mapping module
+            window.location.href = "/dashboard";
+        });
+    </script>
 </body>
 </html>
