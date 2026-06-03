@@ -1,0 +1,263 @@
+/* Reset & Variables */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --dark-brown: #3d2514;
+    --light-cream: #f9f5e8;
+    --accent-gold: #c39b62;
+    --input-bg: #ffffff;
+    --text-muted: #8a7a6e;
+    --shadow-color: rgba(61, 37, 20, 0.15);
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #d7c4b7;
+    
+    /* Absolute mapping to your custom background asset folder */
+    background-image: url('../background_assets/background.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 20px;
+}
+
+/* Card Container Layout */
+.login-container {
+    display: flex;
+    width: 100%;
+    max-width: 900px;
+    height: 480px;
+    background-color: var(--light-cream);
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px var(--shadow-color);
+}
+
+/* Left Brand Column */
+.brand-side {
+    flex: 1;
+    background: linear-gradient(135deg, #2b1a0e 0%, var(--dark-brown) 100%);
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 40px;
+}
+
+/* Subtle circular layout design overlays inside brand side */
+.brand-side::before, .brand-side::after {
+    content: '';
+    position: absolute;
+    border: 2px solid rgba(255, 255, 255, 0.03);
+    border-radius: 50%;
+}
+.brand-side::before { width: 300px; height: 300px; top: -50px; left: -50px; }
+.brand-side::after { width: 200px; height: 200px; bottom: -30px; right: -20px; }
+
+.brand-content h1 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 2.8rem;
+    color: var(--light-cream);
+    line-height: 1.1;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+}
+
+.brand-content .subtitle {
+    font-size: 0.75rem;
+    color: var(--accent-gold);
+    letter-spacing: 3px;
+    font-weight: 500;
+}
+
+/* Styled container for your 2x2.jpg photo on left side */
+.mini-logo-container {
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 0 auto 24px auto;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.brand-logo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.line-decorator {
+    width: 40px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+    margin: 15px auto 0 auto;
+}
+
+/* Right Form Column */
+.form-side {
+    flex: 1.2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 60px;
+}
+
+.form-content {
+    width: 100%;
+    max-width: 360px;
+    text-align: center;
+}
+
+/* Styled container for your 2x2.jpg photo above "Welcome Back" */
+.welcome-logo-container {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 0 auto 16px auto;
+    border: 2px solid #e0d6c5;
+    box-shadow: 0 4px 8px rgba(61, 37, 20, 0.1);
+}
+
+.form-logo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.form-content h2 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.9rem;
+    font-weight: 600;
+    color: var(--dark-brown);
+    letter-spacing: 0.5px;
+}
+
+.form-instruction {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 24px;
+}
+
+/* Inputs styling */
+.input-group {
+    text-align: left;
+    margin-bottom: 18px;
+}
+
+.input-group label {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--dark-brown);
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+}
+
+.input-wrapper {
+    position: relative;
+}
+
+.input-wrapper input {
+    width: 100%;
+    padding: 12px 16px 12px 42px;
+    border: 1px solid #ebdcc5;
+    border-radius: 12px;
+    background-color: var(--input-bg);
+    font-size: 0.85rem;
+    color: var(--dark-brown);
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.input-wrapper input:focus {
+    border-color: var(--accent-gold);
+    box-shadow: 0 0 8px rgba(195, 155, 98, 0.15);
+}
+
+.field-icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #a39589;
+    font-size: 0.95rem;
+}
+
+/* Login Button Styling */
+.btn-login {
+    width: 100%;
+    padding: 14px;
+    margin-top: 10px;
+    background: linear-gradient(to right, #54341c, var(--dark-brown));
+    color: var(--light-cream);
+    border: none;
+    border-radius: 12px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    font-size: 0.95rem;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 6px 12px rgba(61, 37, 20, 0.2);
+    transition: transform 0.15s ease, background 0.2s ease;
+}
+
+.btn-login:hover {
+    background: linear-gradient(to right, #613e24, #442a17);
+    transform: translateY(-1px);
+}
+
+.btn-login:active {
+    transform: translateY(1px);
+}
+
+/* Sign Up Redirect Link Styling */
+.signup-text {
+    font-size: 0.8rem;
+    color: var(--dark-brown);
+    margin-top: 20px;
+    font-weight: 400;
+}
+
+.signup-text a {
+    color: #8c5a3c;
+    text-decoration: none;
+    font-weight: 600;
+    margin-left: 3px;
+    border-bottom: 1px solid transparent;
+    transition: all 0.2s ease;
+}
+
+.signup-text a:hover {
+    color: var(--dark-brown);
+    border-bottom-color: var(--dark-brown);
+}
+
+/* Responsive configurations */
+@media (max-width: 768px) {
+    .login-container {
+        flex-direction: column;
+        height: auto;
+    }
+    .brand-side {
+        padding: 30px;
+    }
+    .form-side {
+        padding: 40px 24px;
+    }
+}

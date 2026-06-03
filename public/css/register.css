@@ -1,0 +1,247 @@
+/* Reset & Styling Baselines */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --dark-brown-card: #51311b;
+    --light-cream-input: #ffffff;
+    --text-gold: #c29a63;
+    --placeholder-color: #baa495;
+    --text-white: #ffffff;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url('../background_assets/background.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 20px;
+}
+
+/* Central Card Layout Box */
+.signup-container {
+    width: 100%;
+    max-width: 520px;
+    background-color: var(--dark-brown-card);
+    border-radius: 28px;
+    padding: 45px 40px;
+    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.35);
+    text-align: center;
+}
+
+.brand-header {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-gold);
+    letter-spacing: 2.5px;
+    margin-bottom: 6px;
+}
+
+.signup-container h1 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 2.4rem;
+    color: var(--text-white);
+    letter-spacing: 1.5px;
+    margin-bottom: 30px;
+}
+
+/* Input Row Configurations */
+.input-group {
+    margin-bottom: 16px;
+}
+
+.password-row {
+    display: flex;
+    gap: 14px;
+}
+
+.split-input {
+    flex: 1;
+}
+
+.input-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.input-wrapper input {
+    width: 100%;
+    padding: 13px 40px 13px 42px;
+    border: none;
+    border-radius: 12px;
+    background-color: var(--light-cream-input);
+    font-size: 0.85rem;
+    color: #3d2514;
+    outline: none;
+}
+
+.input-wrapper input::placeholder {
+    color: var(--placeholder-color);
+    font-weight: 400;
+}
+
+.field-icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--placeholder-color);
+    font-size: 0.95rem;
+}
+
+/* Toggle Password Visibility Position Styles */
+.toggle-password-icon {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--placeholder-color);
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: color 0.2s;
+}
+
+.toggle-password-icon:hover {
+    color: #3d2514;
+}
+
+/* Terms and Conditions Layout */
+.terms-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin: 20px 0 24px 0;
+}
+
+.terms-container input[type="checkbox"] {
+    accent-color: var(--text-gold);
+    cursor: pointer;
+    width: 14px;
+    height: 14px;
+}
+
+.terms-container label {
+    font-size: 0.72rem;
+    color: #ebdcc5;
+    font-weight: 400;
+    cursor: pointer;
+    user-select: none;
+}
+
+/* Standard Sign Up Action Buttons */
+.btn-signup {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(to right, #412511, #311c0c);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    color: var(--text-white);
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.05rem;
+    letter-spacing: 1px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    transition: transform 0.1s ease, background 0.2s ease;
+}
+
+.btn-signup:hover {
+    background: linear-gradient(to right, #4c2d16, #3b220f);
+}
+
+.btn-signup:active {
+    transform: translateY(1px);
+}
+
+/* Layout Separator Custom Lines */
+.divider {
+    display: flex;
+    align-items: center;
+    margin: 22px 0;
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.divider::before, .divider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.divider span {
+    padding: 0 12px;
+    font-size: 0.75rem;
+    color: #ebdcc5;
+    font-weight: 400;
+}
+
+/* Google Sign Up Buttons */
+.btn-google {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--light-cream-input);
+    border: none;
+    border-radius: 12px;
+    color: #3d2514;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    font-size: 0.82rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.2s;
+}
+
+.btn-google:hover {
+    background-color: #f2ebd9;
+}
+
+.google-icon {
+    width: 16px;
+    height: 16px;
+}
+
+/* Redirect Footer Navigation Styles */
+.login-footer {
+    font-size: 0.78rem;
+    color: #ebdcc5;
+    margin-top: 28px;
+}
+
+.login-footer a {
+    color: var(--text-white);
+    text-decoration: underline;
+    font-weight: 600;
+    margin-left: 3px;
+    transition: color 0.2s;
+}
+
+.login-footer a:hover {
+    color: var(--text-gold);
+}
+
+/* Small Device Responsiveness layout adjustment */
+@media (max-width: 480px) {
+    .signup-container {
+        padding: 35px 20px;
+    }
+    .password-row {
+        flex-direction: column;
+        gap: 0;
+    }
+}
