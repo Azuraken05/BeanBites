@@ -36,7 +36,7 @@
                     @csrf
                     
                     <div class="input-group">
-                        <label for="username">USERNAMES</label>
+                        <label for="username">USERNAME</label>
                         <div class="input-wrapper">
                             <i class="fa-regular fa-user field-icon"></i>
                             <input type="text" id="username" name="username" placeholder="Enter username" required autocomplete="off">
