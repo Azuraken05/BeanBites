@@ -32,11 +32,11 @@
                 <h2>Welcome Back</h2>
                 <p class="form-instruction">Sign in to your account</p>
 
-                <form id="loginForm" action="javascript:void(0);">
+                <form id="loginForm">
                     @csrf
                     
                     <div class="input-group">
-                        <label for="username">USERNAMES</label>
+                        <label for="username">USERNAME</label>
                         <div class="input-wrapper">
                             <i class="fa-regular fa-user field-icon"></i>
                             <input type="text" id="username" name="username" placeholder="Enter username" required autocomplete="off">
@@ -66,12 +66,39 @@
     <script src="/js/login.js"></script>
 
     <script>
-        document.getElementById('loginForm').addEventListener('submit', (e) => {
-            // Stop page from resetting instantly on form submit check
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
-            // Redirect right into your root dashboard path rule mapping module
-            window.location.href = "/dashboard";
+            // Gather the token, username, and password fields automatically
+            const formData = new FormData(this);
+
+            // Fetch request targeting Route::post('/login') securely
+            fetch('/login', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => {
+                return response.json().then(data => ({
+                    status: response.status,
+                    body: data
+                }));
+            })
+            .then(res => {
+                if (res.status === 200 && res.body.success) {
+                    // Success! Slide the verified session into the system dashboard
+                    window.location.href = "/dashboard";
+                } else {
+                    // Display backend validation error messages directly
+                    alert(res.body.message || "Invalid Username or Password configuration.");
+                }
+            })
+            .catch(error => {
+                console.error("Authentication Process Error:", error);
+                alert("Could not connect to database pipeline server.");
+            });
         });
     </script>
 </body>

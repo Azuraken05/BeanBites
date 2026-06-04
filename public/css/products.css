@@ -115,11 +115,16 @@
     max-width: 420px;
     background-color: #f4ebd9;
     border-radius: 24px;
-    padding: 35px 30px;
+    padding: 30px 24px 25px 24px; /* Compact padding for ideal scroll boundaries */
     box-shadow: 0 20px 40px rgba(0,0,0,0.25);
     text-align: center;
     transform: scale(0.9);
     transition: transform 0.2s ease;
+    
+    /* Flex constraint mapping to prevent screen spillover */
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
 }
 
 .modal-overlay:target .modal-card {
@@ -131,7 +136,45 @@
     font-size: 1.8rem;
     color: #3d2514;
     letter-spacing: 1px;
-    margin-bottom: 24px;
+    margin-bottom: 20px;
+    flex-shrink: 0; /* Keeps heading absolute and locked at the top */
+}
+
+/* Form structure container inside flex card */
+#addProductForm {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    width: 100%;
+}
+
+/* ==========================================================================
+   UPDATED: INTERNAL SCROLL CONTAINER LAYER CONFIGURATION
+   ========================================================================== */
+.modal-scroll-body {
+    overflow-y: auto; /* Activates vertical layout scrollbar */
+    padding: 4px 6px;  /* Clearance spacing so fields do not touch scroll handle */
+    margin-bottom: 14px;
+    text-align: left;
+    flex-grow: 1;
+}
+
+/* Minimalist webkit styling rules for sleek user view tracks */
+.modal-scroll-body::-webkit-scrollbar {
+    width: 6px;
+}
+
+.modal-scroll-body::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.modal-scroll-body::-webkit-scrollbar-thumb {
+    background-color: #baa495;
+    border-radius: 10px;
+}
+
+.modal-scroll-body::-webkit-scrollbar-thumb:hover {
+    background-color: #8c5a3c;
 }
 
 /* Input Form Controls Layout Styling */
@@ -200,9 +243,10 @@
     font-weight: 600;
     font-size: 0.95rem;
     cursor: pointer;
-    margin-top: 14px;
+    margin-top: 4px;
     box-shadow: 0 4px 10px rgba(140, 90, 60, 0.2);
     transition: background-color 0.2s;
+    flex-shrink: 0; /* Prevents action button distortions during scroll bounds */
 }
 
 .btn-modal-save:hover {
@@ -223,8 +267,86 @@
     margin-top: 10px;
     box-shadow: 0 4px 10px rgba(43, 23, 12, 0.2);
     transition: background-color 0.2s;
+    text-align: center;
+    flex-shrink: 0; /* Prevents action button distortions during scroll bounds */
 }
 
 .btn-modal-cancel:hover {
     background-color: #170b04;
+}
+
+/* ==========================================================================
+   UPDATED: CENTERED IMAGE UPLOAD DROPZONE LAYOUT RULES
+   ========================================================================== */
+
+/* Custom Image Upload Dropzone Outer Card */
+.image-upload-dropzone {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 120px; /* Enhanced height for a balanced look at the top */
+    background-color: #ffffff !important;
+    border: 2px dashed #baa495;
+    border-radius: 12px;
+    cursor: pointer;
+    padding: 12px;
+    position: relative;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.image-upload-dropzone:hover {
+    border-color: #8c5a3c;
+    background-color: #fcfaf5 !important;
+}
+
+/* Inner flexbox container for absolute vertical and horizontal centering */
+.dropzone-center-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    height: 100%;
+}
+
+/* Hides standard native browser file input fields */
+.image-upload-dropzone input[type="file"] {
+    display: none !important;
+}
+
+.upload-icon {
+    font-size: 1.8rem; /* Enhanced size for visual hierarchy */
+    color: #baa495;
+    transition: color 0.2s;
+    line-height: 1;
+}
+
+.image-upload-dropzone:hover .upload-icon {
+    color: #8c5a3c;
+}
+
+.image-upload-dropzone span {
+    font-size: 0.8rem;
+    color: #baa495;
+    font-weight: 500;
+    line-height: 1.2;
+    text-align: center;
+}
+
+.image-upload-dropzone:hover span {
+    color: #614633;
+}
+
+/* Live dynamic preview thumbnail layout formatting */
+.image-upload-preview-thumbnail {
+    max-width: 100%;
+    max-height: 70px; /* Clean bounds confinement within the card framework */
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 4px;
+    animation: fadeIn 0.2s ease-out;
 }

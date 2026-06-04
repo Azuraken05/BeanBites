@@ -12,11 +12,16 @@
 </head>
 <body>
 
+    <div id="toastMessage" class="toast-notification">
+        <span class="toast-icon-wrapper"><i class="fa-solid fa-circle-exclamation"></i></span>
+        <span id="toastText">Notification message goes here</span>
+    </div>
+
     <div class="signup-container">
         <p class="brand-header">BEAN N' BITES</p>
         <h1>SIGN UP</h1>
 
-        <form id="signupForm" action="#" method="POST">
+        <form id="signupForm">
             @csrf
             
             <div class="input-group">
@@ -44,7 +49,7 @@
                 <div class="input-group split-input">
                     <div class="input-wrapper">
                         <i class="fa-solid fa-lock field-icon"></i>
-                        <input type="password" id="password" name="password" placeholder="Password" required>
+                        <input type="password" id="password" name="password" placeholder="Password (6-15 chars)" minlength="6" maxlength="15" required>
                         <i class="fa-regular fa-eye toggle-password-icon" onclick="togglePasswordVisibility('password', this)"></i>
                     </div>
                 </div>
@@ -52,7 +57,7 @@
                 <div class="input-group split-input">
                     <div class="input-wrapper">
                         <i class="fa-solid fa-lock field-icon"></i>
-                        <input type="password" id="password_confirmation" name="password_confirmation" placeholder="Confirm Password" required>
+                        <input type="password" id="password_confirmation" name="password_confirmation" placeholder="Confirm Password" minlength="6" maxlength="15" required>
                         <i class="fa-regular fa-eye toggle-password-icon" onclick="togglePasswordVisibility('password_confirmation', this)"></i>
                     </div>
                 </div>
@@ -97,20 +102,85 @@
             }
         }
 
+        // Custom Helper Function to show beautiful temporary Toast Alerts on screen
+        function showToast(message) {
+            const toast = document.getElementById('toastMessage');
+            const toastText = document.getElementById('toastText');
+            
+            toastText.textContent = message;
+            toast.classList.add('show');
+            
+            // Auto hide toast banner out of screen frame after 4 seconds
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 4000);
+        }
+
         // Google Authentication Warning Message Trigger
         document.getElementById('googleAuthBtn').addEventListener('click', () => {
-            alert("This feature is under the process");
+            showToast("This feature is under the process");
         });
 
-        // Redirect to login screen after clicking "SIGN UP"
-        document.getElementById('signupForm').addEventListener('submit', (e) => {
-            e.preventDefault(); // Temporarily prevent full page reload error since action points nowhere
+        // AJAX Database Submission Engine
+        document.getElementById('signupForm').addEventListener('submit', function(e) {
+            e.preventDefault();
             
-            // Optional registration toast / alert before shipping them back
-            alert("Account registered successfully!");
+            const emailInput = document.getElementById('email').value;
+            const usernameInput = document.getElementById('username').value;
+            const passwordInput = document.getElementById('password').value;
+            const confirmPasswordInput = document.getElementById('password_confirmation').value;
+
+            // 1. Double check email format has an "@" symbol manually just in case
+            if (!emailInput.includes('@')) {
+                showToast("Please enter a valid email address containing '@'.");
+                return;
+            }
+
+            // 2. Frontend restriction check for password limits range configuration rules
+            if (passwordInput.length < 6 || passwordInput.length > 15) {
+                showToast("Password must be between 6 to 15 characters long.");
+                return;
+            }
+
+            // 3. Confirm match verification rule mapping
+            if (passwordInput !== confirmPasswordInput) {
+                showToast("Passwords do not match.");
+                return;
+            }
             
-        // Change it to route them right into your dashboard layout on signup click instead:
-        window.location.href = "/dashboard";
+            const formData = new FormData(this);
+
+            // Automatically format and capitalize the first letter of the username on submission
+            const formattedUsername = usernameInput.charAt(0).toUpperCase() + usernameInput.slice(1);
+            formData.set('username', formattedUsername);
+
+            // Fetch request pointing straight to your Laravel register route handler
+            fetch('/register', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => response.json().then(data => ({ status: response.status, body: data })))
+            .then(res => {
+                if (res.status === 200 && res.body.success) {
+                    alert(res.body.message); // Native alert for critical redirection changes
+                    window.location.href = "/";
+                } else {
+                    if (res.body.errors) {
+                        let errorMessages = Object.values(res.body.errors).flat().join('\n');
+                        showToast(errorMessages);
+                    } else {
+                        showToast(res.body.message || "Registration processing failed.");
+                    }
+                }
+            })
+            .catch(error => {
+                console.error("Database Registration Error:", error);
+                showToast("Could not connect to registration database server.");
+            });
         });
     </script>
 </body>
