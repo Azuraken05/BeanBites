@@ -17,6 +17,19 @@ use Illuminate\Support\Facades\Route;
         return view('register');
     });
 
-Route::post('/register', function () {
-    return redirect('/');
-});
+    // 4. This displays your master dynamic Dashboard module template layout
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    });
+
+    Route::get('/products', function () {
+        return view('products');
+    });
+
+    Route::get('/pos', function () {
+        return view('pos');
+    });
+
+    Route::get('/reports', function () {
+        return view('reports');
+    });
