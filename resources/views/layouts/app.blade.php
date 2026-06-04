@@ -46,11 +46,19 @@
         </nav>
 
         <div class="nav-user-profile">
+<<<<<<< HEAD
             <span class="employee-name">EMPLOYEE NAME</span>
             <div class="user-avatar-circle">
                 <img src="/background_assets/2x2.jpg" alt="Profile">
             </div>
             <a href="/" class="logout-link">
+=======
+            <span class="employee-name">{{ Auth::user()->username }}</span>
+            <div class="user-avatar-circle">
+                <img src="/background_assets/2x2.jpg" alt="Profile">
+            </div>
+            <a href="/logout" class="logout-link">
+>>>>>>> 57661bda363f3ec5b0b741bdea17b76797df1f9d
                 <i class="fa-solid fa-right-from-bracket"></i> LOGOUT
             </a>
         </div>

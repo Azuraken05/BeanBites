@@ -11,9 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // 1. Rebuilding users table with your custom unique terminal username handle
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('username')->unique(); // Added back to fix SQL column exceptions!
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
