@@ -1,0 +1,414 @@
+/* Layout Positioning Framework Panels */
+.pos-container {
+    display: flex;
+    gap: 24px;
+    animation: fadeIn 0.2s ease-out;
+}
+
+.menu-column { flex: 1.8; }
+.cart-column { flex: 1; }
+
+.pos-card {
+    background-color: #fcf8ee;
+    border-radius: 18px;
+    padding: 24px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+    color: #3d2514;
+    margin-bottom: 20px;
+}
+
+.header-card {
+    background-color: #2b170c;
+    color: #ffffff;
+    padding: 14px 28px;
+}
+.header-card h2 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.5rem;
+    letter-spacing: 1px;
+}
+
+/* Category Filters Bar Navigation */
+.products-container-box {
+    background-color: #f4ebd9;
+    border-radius: 18px;
+    padding: 24px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.section-title-tag {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.4rem;
+    color: #2b170c;
+    margin-bottom: 16px;
+    letter-spacing: 0.5px;
+}
+
+.category-tabs-bar {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.btn-category {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    background-color: #8c6b53;
+    color: #ffffff;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: background-color 0.15s;
+}
+
+.btn-category.active, .btn-category:hover {
+    background-color: #3d2514;
+}
+
+/* Clickable Dynamic Grid Items Matrix */
+.products-grid-layout {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 16px;
+}
+
+.product-item-clickable-card {
+    background-color: #2b170c;
+    border-radius: 14px;
+    padding: 12px;
+    text-align: center;
+    color: #ffffff;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    transition: transform 0.1s, background-color 0.2s;
+}
+
+.product-item-clickable-card:hover {
+    transform: translateY(-2px);
+    background-color: #3d2514;
+}
+
+.product-mock-image-frame {
+    height: 90px;
+    background-color: #caa584;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: #3d2514;
+    margin-bottom: 8px;
+}
+
+.product-card-title-text {
+    font-size: 0.82rem;
+    font-weight: 600;
+    margin-bottom: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.product-card-price-tag {
+    font-size: 0.78rem;
+    color: #e2d6c5;
+    font-weight: 400;
+}
+
+/* Itemized Terminal Checkout Cart Design */
+.cart-wrapper-card {
+    display: flex;
+    flex-direction: column;
+    min-height: 480px;
+}
+
+.cart-wrapper-card h3 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.3rem;
+    border-bottom: 2px solid #e2d6c5;
+    padding-bottom: 10px;
+    margin-bottom: 14px;
+}
+
+.cart-items-list {
+    flex: 1;
+    overflow-y: auto;
+    margin-bottom: 16px;
+    padding-right: 4px;
+}
+
+.empty-cart-notice {
+    text-align: center;
+    color: #a39589;
+    font-style: italic;
+    font-size: 0.85rem;
+    margin-top: 40px;
+}
+
+.cart-item-row-entry {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px dashed #e2d6c5;
+    animation: fadeIn 0.15s ease-out;
+}
+
+.item-name-meta {
+    display: flex;
+    flex-direction: column;
+    font-size: 0.85rem;
+}
+
+.qty-badge-pill {
+    font-size: 0.72rem;
+    color: #8c5a3c;
+    font-weight: 600;
+}
+
+.item-actions-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.88rem;
+    font-weight: 600;
+}
+
+.btn-remove-cart-item {
+    background: none;
+    border: none;
+    color: #b04646;
+    cursor: pointer;
+    font-size: 0.9rem;
+    padding: 4px;
+    transition: color 0.15s;
+}
+.btn-remove-cart-item:hover { color: #802a2a; }
+
+/* Dashboard Summary Output Frame Block */
+.cart-summary-box {
+    background-color: #2b170c;
+    color: #ffffff;
+    border-radius: 14px;
+    padding: 16px 20px;
+    margin-bottom: 16px;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: #baa495;
+    margin-bottom: 6px;
+}
+
+.summary-total {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    border-top: 1px solid rgba(255,255,255,0.15);
+    padding-top: 6px;
+    margin-top: 4px;
+}
+
+.btn-checkout {
+    width: 100%;
+    padding: 14px;
+    background-color: #2bb85d;
+    color: #ffffff;
+    border: none;
+    border-radius: 12px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(43, 184, 93, 0.2);
+    transition: background-color 0.2s, opacity 0.2s;
+}
+
+.btn-checkout:hover { background-color: #22994c; }
+.btn-checkout:disabled {
+    background-color: #baa495;
+    opacity: 0.5;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+/* Modals Overlay Base Layer Architecture */
+.pos-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(43, 23, 12, 0.4);
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.18s ease;
+    z-index: 2000;
+}
+
+.pos-modal-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.pos-modal-card {
+    width: 100%;
+    max-width: 380px;
+    background-color: #ebdcc5;
+    border-radius: 24px;
+    padding: 35px 30px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+    text-align: center;
+}
+
+.pos-modal-card h2 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.7rem;
+    color: #3d2514;
+    letter-spacing: 0.5px;
+    margin-bottom: 20px;
+}
+
+/* Spinner Layout Row Styling Rule Controls */
+.spinner-control-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+    margin-bottom: 24px;
+}
+
+.btn-spinner {
+    background-color: #8c5a3c;
+    color: #ffffff;
+    border: none;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    font-size: 1.3rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: background-color 0.15s;
+}
+.btn-spinner:hover { background-color: #51311b; }
+
+.spinner-value {
+    font-family: 'Oswald', sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #2b170c;
+    min-width: 40px;
+}
+
+/* Operational Dialog Layout Action Controls */
+.btn-modal-action {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 12px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 0.92rem;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.action-save {
+    background-color: #8c5a3c;
+    color: #ffffff;
+}
+.action-save:hover { background-color: #70452b; }
+
+.action-cancel {
+    background-color: #2b170c;
+    color: #ffffff;
+}
+.action-cancel:hover { background-color: #120904; }
+
+/* Sub-Component: Invoice Hardware Receipt Framing Spec */
+.receipt-card {
+    background-color: #ffffff !important;
+    max-width: 340px;
+    border: 1px solid #ebdcc5;
+}
+
+.receipt-body-invoice {
+    text-align: left;
+    margin: 20px 0 14px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.receipt-invoice-line {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.88rem;
+    color: #3d2514;
+}
+
+.receipt-divider-line {
+    border-top: 2px dashed #baa495;
+    margin: 12px 0;
+}
+
+.receipt-total-display {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #2b170c;
+    margin-bottom: 20px;
+}
+
+/* ==========================================================================
+   CRITICAL PRINTER HARDWARE EMULATION OVERRIDES ( isolates invoice page content)
+   ========================================================================== */
+@media print {
+    /* Hide everything on the app template layout including body backgrounds and navbars */
+    body, .main-navbar, .content-wrapper, .menu-column, .cart-column, .pos-modal-overlay, .no-print {
+        background: none !important;
+        background-image: none !important;
+        display: none !important;
+        box-shadow: none !important;
+        backdrop-filter: none !important;
+    }
+
+    /* Isolate and map receipt container box directly onto center print field */
+    .pos-modal-overlay#receiptModal {
+        position: absolute !important;
+        left: 0 !important;
+        top: 0 !important;
+        width: 100% !important;
+        height: auto !important;
+        display: flex !important;
+        opacity: 1 !important;
+        background: none !important;
+    }
+
+    .receipt-card {
+        border: none !important;
+        box-shadow: none !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 0 !important;
+        margin: 0 auto !important;
+    }
+}
