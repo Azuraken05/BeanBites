@@ -3,136 +3,169 @@
 @section('title', 'Reports - Bean & Bites POS')
 
 @section('content')
+<!-- Core Layout Stylesheet Link -->
+<link rel="stylesheet" href="{{ asset('css/reports.css') }}">
+
 <div class="reports-container">
-    
-    <div class="metrics-row">
-        <div class="metric-card">
-            <p class="metric-label">TODAY SALES</p>
-            <h2 class="metric-value">₱0</h2>
-            <p class="metric-subtext">0 Orders Today</p>
+
+    <!-- 1. SUMMARY CARDS BANNER ROW -->
+    <div class="metrics-dashboard-row">
+        <!-- Today Sales Card -->
+        <div class="metric-card-box">
+            <small>TODAY SALES</small>
+            <h2>₱{{ number_format($todaySales, 0) }}</h2>
+            <span>{{ $todayOrdersCount }} Orders Today</span>
         </div>
-        <div class="metric-card">
-            <p class="metric-label">WEEK SALES</p>
-            <h2 class="metric-value">₱0</h2>
-            <p class="metric-subtext">0 Orders This Week</p>
+
+        <!-- Week Sales Card -->
+        <div class="metric-card-box">
+            <small>WEEK SALES</small>
+            <h2>₱{{ number_format($weekSales, 0) }}</h2>
+            <span>{{ $weekOrdersCount }} Orders This Week</span>
         </div>
-        <div class="metric-card">
-            <p class="metric-label">TOTAL SALES</p>
-            <h2 class="metric-value">₱0</h2>
-            <p class="metric-subtext">Overall Sales</p>
+
+        <!-- Total Sales Overall Card -->
+        <div class="metric-card-box">
+            <small>TOTAL SALES</small>
+            <h2>₱{{ number_format($totalSalesOverall, 0) }}</h2>
+            <span>Overall Sales</span>
         </div>
     </div>
 
-    <div class="reports-middle-grid">
-        <div class="chart-card analytics-main-card">
-            <div class="chart-header">
+    <!-- 2. ANALYTICS CHART MATRIX & TRANSACTION HISTORY SPLIT BLOCK -->
+    <div class="analytics-log-split-row">
+        
+        <!-- Left Column Module: Sales Analytics Bar Graph Card Box -->
+        <div class="chart-wrapper-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
                 <h3>SALES ANALYTICS</h3>
-                <div class="chart-toggle-buttons">
-                    <button class="btn-toggle active" id="btnReportWeek">Week</button>
-                    <button class="btn-toggle" id="btnReportMonth">Month</button>
+                
+                <!-- Toggle Controls Tab Links for Weekly and Monthly Chart Ranges -->
+                <div class="toggle-pill-container">
+                    <button class="btn-toggle-switch chart-toggle active" onclick="toggleAnalyticsView('week', this)">Week</button>
+                    <button class="btn-toggle-switch chart-toggle" onclick="toggleAnalyticsView('month', this)">Month</button>
                 </div>
             </div>
             
-            <div class="bar-chart-visualization-empty">
-                <div class="empty-chart-fallback-text" id="reportChartText">No Sales Recorded Yet</div>
-                <div class="bar-container-wireframe" id="reportBarContainer">
-                    <div class="mock-bar" style="height: 45%"></div>
-                    <div class="mock-bar" style="height: 25%"></div>
-                    <div class="mock-bar" style="height: 65%"></div>
-                    <div class="mock-bar" style="height: 40%"></div>
-                    <div class="mock-bar" style="height: 55%"></div>
-                    <div class="mock-bar" style="height: 35%"></div>
-                    <div class="mock-bar" style="height: 15%"></div>
+            <!-- Graphic Chart Pillars Dynamic Root View Renderers -->
+            <div class="chart-viewport">
+                
+                <!-- WEEK ANALYTICS CORE BLUEPRINT (MON-SUN) -->
+                <div id="chartViewWeek" class="chart-data-wrapper">
+                    @php $maxWeekVal = max($weeklyChartData) > 0 ? max($weeklyChartData) : 1; @endphp
+                    @foreach($weeklyChartData as $dayIdx => $amount)
+                        @php $barHeight = ($amount / $maxWeekVal) * 100; @endphp
+                        <div class="chart-column-node">
+                            <span class="amount-label">{{ $amount > 0 ? '₱'.number_format($amount/1000, 1).'K' : '' }}</span>
+                            <div class="chart-pillar-bar" style="height: {{ $amount > 0 ? $barHeight : 10 }}%;"></div>
+                            <span class="axis-label">{{ $daysOfWeek[$dayIdx] }}</span>
+                        </div>
+                    @endforeach
+                    @if(max($weeklyChartData) == 0)
+                        <div class="empty-chart-watermark">No Sales Recorded Yet This Week</div>
+                    @endif
                 </div>
-            </div>
-            
-            <div class="chart-days-axis" id="chartDaysAxis">
-                <span>MON</span><span>TUE</span><span>WED</span><span>THU</span><span>FRI</span><span>SAT</span><span>SUN</span>
+
+                <!-- MONTH ANALYTICS CORE BLUEPRINT (W1-W5) -->
+                <div id="chartViewMonth" class="chart-data-wrapper" style="display: none;">
+                    @php $maxMonthVal = max($monthlyChartData) > 0 ? max($monthlyChartData) : 1; @endphp
+                    @foreach($monthlyChartData as $weekIdx => $amount)
+                        @php $barHeight = ($amount / $maxMonthVal) * 100; @endphp
+                        <div class="chart-column-node">
+                            <span class="amount-label">{{ $amount > 0 ? '₱'.number_format($amount/1000, 1).'K' : '' }}</span>
+                            <div class="chart-pillar-bar" style="height: {{ $amount > 0 ? $barHeight : 10 }}%;"></div>
+                            <span class="axis-label">{{ $monthlyChartLabels[$weekIdx] }}</span>
+                        </div>
+                    @endforeach
+                    @if(max($monthlyChartData) == 0)
+                        <div class="empty-chart-watermark">No Sales Recorded Yet This Month</div>
+                    @endif
+                </div>
+
             </div>
         </div>
 
-        <div class="chart-card transactions-feed-card">
-            <div class="chart-header">
+        <!-- Right Column Module: Transactions History Dynamic Logger List Box -->
+        <div class="transactions-wrapper-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; flex-shrink: 0;">
                 <h3>TRANSACTIONS</h3>
-                <div class="chart-toggle-buttons">
-                    <button class="btn-toggle active" id="btnFeedDaily">Daily</button>
-                    <button class="btn-toggle" id="btnFeedWeekly">Weekly</button>
+                
+                <div class="toggle-pill-container">
+                    <button class="btn-toggle-switch tx-toggle active" onclick="toggleTransactionsLog('daily', this)">Daily</button>
+                    <button class="btn-toggle-switch tx-toggle" onclick="toggleTransactionsLog('weekly', this)">Weekly</button>
                 </div>
             </div>
             
-            <div class="transactions-log-wrapper" id="transactionsLogWrapper">
-                <div class="empty-chart-fallback-text static-msg">No transactions log records found</div>
+            <div class="transactions-scroll-viewport">
+                <div id="txLogContainer">
+                    <!-- Script dynamically appends list layout items inside this view track -->
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="low-stock-alert-card">
-        <div class="low-stock-header">
+    <!-- 3. LOW STOCK & DELETED PRODUCTS TRACKER SPLIT ROW -->
+    <div class="bottom-trackers-row">
+        
+        <!-- Left Sub-Box: Low Stock Monitor Alarm Container Panel -->
+        <div class="low-stock-alert-panel">
             <h3>LOW STOCK ALERT</h3>
+            <div class="inner-tracker-viewport">
+                @forelse($lowStockProducts as $lowItem)
+                    <div class="low-stock-row">
+                        <span class="low-stock-name">{{ $lowItem->name }} (<span class="low-stock-category">{{ $lowItem->category }}</span>)</span>
+                        @if($lowItem->stock == 0)
+                            <span class="badge-alert-status sold-out">SOLD OUT</span>
+                        @else
+                            <span class="badge-alert-status critical">CRITICAL STOCK: {{ $lowItem->stock }} left</span>
+                        @endif
+                    </div>
+                @empty
+                    <div class="empty-trackers-msg">All products are currently well stocked.</div>
+                @endforelse
+            </div>
         </div>
-        <div class="low-stock-list-frame">
-            <div class="empty-chart-fallback-text static-msg">All products are currently well stocked.</div>
+
+        <!-- Right Sub-Box: Deleted Product Audit Transaction Recorder Panel -->
+        <div class="deleted-products-audit-panel">
+            <h3>DELETED PRODUCT TRACKER</h3>
+            <div class="inner-tracker-viewport">
+                @forelse($deletedProducts as $trashedItem)
+                    <div class="audit-row-entry">
+                        <div class="audit-header-line">
+                            <span class="audit-product-name">{{ $trashedItem->name }}</span>
+                            <span class="badge-audit-user">
+                                Removed by: {{ $trashedItem->deletedBy ? $trashedItem->deletedBy->name : 'Unknown User' }}
+                            </span>
+                        </div>
+                        <div class="audit-footer-line">
+                            <span class="audit-reason-text">
+                                Reason: "{{ $trashedItem->delete_remarks ?? 'No explicit explanation supplied' }}"
+                            </span>
+                            <small class="audit-timestamp">
+                                {{ $trashedItem->deleted_at ? $trashedItem->deleted_at->format('M d, Y h:i A') : '' }}
+                            </small>
+                        </div>
+                    </div>
+                @empty
+                    <div class="empty-trackers-msg">No deleted history logs tracked inside current parameters bounds.</div>
+                @endforelse
+            </div>
         </div>
+
     </div>
 
 </div>
 
+<!-- Core Operations Modular Script Link -->
+<script src="{{ asset('js/reports.js') }}"></script>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        // Chart Toggle Selectors
-        const btnWeek = document.getElementById('btnReportWeek');
-        const btnMonth = document.getElementById('btnReportMonth');
-        const chartText = document.getElementById('reportChartText');
-        const barContainer = document.getElementById('reportBarContainer');
-        const axisLine = document.getElementById('chartDaysAxis');
-
-        // Feed Toggle Selectors
-        const btnDaily = document.getElementById('btnFeedDaily');
-        const btnWeekly = document.getElementById('btnFeedWeekly');
-        const feedContainer = document.getElementById('transactionsLogWrapper');
-
-        // Weekly vs Monthly graph setups
-        const weekBars = ['45%', '25%', '65%', '40%', '55%', '35%', '15%'];
-        const monthBars = ['30%', '50%', '15%', '65%', '40%', '70%', '25%', '85%', '45%', '60%'];
-
-        function setBars(heights) {
-            barContainer.innerHTML = '';
-            heights.forEach(h => {
-                const b = document.createElement('div');
-                b.className = 'mock-bar';
-                b.style.height = h;
-                barContainer.appendChild(b);
-            });
-        }
-
-        btnWeek.addEventListener('click', () => {
-            btnWeek.classList.add('active');
-            btnMonth.classList.remove('active');
-            chartText.textContent = "No Sales Recorded Yet";
-            axisLine.style.opacity = "1";
-            setBars(weekBars);
-        });
-
-        btnMonth.addEventListener('click', () => {
-            btnMonth.classList.add('active');
-            btnWeek.classList.remove('active');
-            chartText.textContent = "No Data Available for this Month";
-            axisLine.style.opacity = "0"; // Hide days axis on monthly look
-            setBars(monthBars);
-        });
-
-        // Feed Switch Logic
-        btnDaily.addEventListener('click', () => {
-            btnDaily.classList.add('active');
-            btnWeekly.classList.remove('active');
-            feedContainer.innerHTML = '<div class="empty-chart-fallback-text static-msg">No transactions log records found</div>';
-        });
-
-        btnWeekly.addEventListener('click', () => {
-            btnWeekly.classList.add('active');
-            btnDaily.classList.remove('active');
-            feedContainer.innerHTML = '<div class="empty-chart-fallback-text static-msg">No weekly transaction history found</div>';
-        });
+        // Hydrate data structures array collections instantly into active cache memory
+        initializeReportsEngine(
+            @json($dailyTransactions),
+            @json($weeklyTransactions)
+        );
     });
 </script>
 @endsection

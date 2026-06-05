@@ -140,8 +140,8 @@
     flex-shrink: 0; /* Keeps heading absolute and locked at the top */
 }
 
-/* Form structure container inside flex card */
-#addProductForm {
+/* Form structure containers inside flex card layouts */
+#addProductForm, #editProductForm {
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -149,7 +149,7 @@
 }
 
 /* ==========================================================================
-   UPDATED: INTERNAL SCROLL CONTAINER LAYER CONFIGURATION
+   INTERNAL SCROLL CONTAINER LAYER CONFIGURATION
    ========================================================================== */
 .modal-scroll-body {
     overflow-y: auto; /* Activates vertical layout scrollbar */
@@ -276,7 +276,7 @@
 }
 
 /* ==========================================================================
-   UPDATED: CENTERED IMAGE UPLOAD DROPZONE LAYOUT RULES
+   CENTERED IMAGE UPLOAD DROPZONE LAYOUT RULES
    ========================================================================== */
 
 /* Custom Image Upload Dropzone Outer Card */
@@ -349,4 +349,212 @@
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     margin-bottom: 4px;
     animation: fadeIn 0.2s ease-out;
+}
+
+/* ==========================================================================
+   SLIDER TOGGLE SWITCH INTERACTION STYLES
+   ========================================================================== */
+
+/* Toggle Layout Row Setup */
+.toggle-field-group {
+    display: flex !important;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+    background-color: rgba(255, 255, 255, 0.4);
+    padding: 10px 14px;
+    border-radius: 12px;
+}
+
+.toggle-field-group label {
+    margin-bottom: 0 !important; /* Centers label vertically with the pill switch */
+}
+
+/* Base switch track layout framework container */
+.switch-control {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 24px;
+    cursor: pointer;
+}
+
+/* Completely hide default crude HTML input check checkbox box */
+.switch-control input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* Slider Track Element background */
+.slider-round {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #baa495;
+    transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 34px;
+}
+
+/* Inner white circle knob indicator node */
+.slider-round:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+/* Active status color shift change assignment rule when checked */
+.switch-control input:checked + .slider-round {
+    background-color: #8c5a3c;
+}
+
+/* Shift knob position across track timeline boundary rules */
+.switch-control input:checked + .slider-round:before {
+    transform: translateX(20px);
+}
+
+/* Dynamic field disabled visibility styling state formatting rules */
+.stock-field-disabled {
+    opacity: 0.45;
+    pointer-events: none;
+    transform: scale(0.98);
+    transition: all 0.2s ease-in-out;
+}
+
+/* ==========================================================================
+   TABLE ROW LAYOUT ACTION CONTROL BUTTONS STYLES
+   ========================================================================== */
+.action-btn-group {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.btn-action-edit, .btn-action-delete {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-decoration: none;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.1s ease, background-color 0.2s;
+    cursor: pointer;
+}
+
+/* Green Edit Button Layout rules matching screenshot profile dimensions */
+.btn-action-edit {
+    background-color: #1e6f2d;
+    color: #ffffff;
+}
+
+.btn-action-edit:hover {
+    background-color: #155220;
+}
+
+/* Dark Crimson Delete Action Button specification rules */
+.btn-action-delete {
+    background-color: #942121;
+    color: #ffffff;
+}
+
+.btn-action-delete:hover {
+    background-color: #701616;
+}
+
+.btn-action-edit:active, .btn-action-delete:active {
+    transform: scale(0.97);
+}
+
+/* ==========================================================================
+   CUSTOM COMPACT DELETE TRANSACTION OVERLAY CONFIRMATION MODAL WIDGET
+   ========================================================================== */
+.delete-modal-override {
+    max-width: 380px !important; /* Slightly more compact card layout box parameter constraints */
+}
+
+.delete-confirmation-text {
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.9rem;
+    color: #3d2514;
+    margin-bottom: 12px;
+    line-height: 1.4;
+}
+
+.delete-modal-footer-buttons {
+    display: flex;
+    gap: 12px;
+    margin-top: 22px;
+    width: 100%;
+}
+
+.btn-confirm-delete {
+    flex: 1;
+    padding: 12px;
+    background-color: #942121;
+    border: none;
+    border-radius: 12px;
+    color: #ffffff;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 0.92rem;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(148, 33, 33, 0.25);
+    transition: background-color 0.2s;
+}
+
+.btn-confirm-delete:hover {
+    background-color: #701616;
+}
+
+.btn-confirm-cancel {
+    flex: 1;
+    padding: 12px;
+    background-color: #2b170c;
+    border-radius: 12px;
+    color: #ffffff;
+    text-decoration: none;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 0.92rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 10px rgba(43, 23, 12, 0.2);
+    transition: background-color 0.2s;
+}
+
+.btn-confirm-cancel:hover {
+    background-color: #170b04;
+}
+
+/* ==========================================================================
+   NEW: INVENTORY TERMINAL LIVE SEARCH INPUT BOX STYLES
+   ========================================================================== */
+.inventory-search-wrapper #inventorySearchInput {
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
+    transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.inventory-search-wrapper #inventorySearchInput:focus {
+    border-color: #2b170c;
+    box-shadow: 0 4px 10px rgba(43, 23, 12, 0.05);
+}
+
+.inventory-search-wrapper #inventorySearchInput::placeholder {
+    color: #c4b4a7;
+    font-weight: 400;
 }
