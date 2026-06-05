@@ -1,0 +1,374 @@
+/* Core Structural Properties Rules */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    min-height: 100vh;
+    background-color: #cbbaa7;
+    background-image: url('../background_assets/BackgroundStandard.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+/* Static Shared Navbar Configuration */
+.main-navbar {
+    width: 100%;
+    height: 70px;
+    background-color: #3d2514;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 30px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.nav-branding {
+    font-family: 'Oswald', sans-serif;
+    color: #ffffff;
+    font-size: 1.8rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.nav-links {
+    display: flex;
+    gap: 24px;
+    height: 100%;
+    align-items: center;
+}
+
+.nav-links a {
+    color: #ffffff;
+    text-decoration: none;
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.nav-links a:hover, .nav-links a.active {
+    background-color: rgba(255, 255, 255, 0.15);
+    color: #f9f5e8;
+}
+
+.nav-icon {
+    width: 18px;
+    height: 18px;
+    filter: brightness(0) invert(1); /* Forces your custom SVGs to render sharp white inside navbar */
+}
+
+.nav-user-profile {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.employee-name {
+    font-family: 'Oswald', sans-serif;
+    color: #ffffff;
+    font-size: 1.1rem;
+    font-style: italic;
+    letter-spacing: 0.5px;
+}
+
+.user-avatar-circle {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid #ffffff;
+}
+
+.user-avatar-circle img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.logout-link {
+    color: #ffffff;
+    text-decoration: none;
+    font-family: 'Oswald', sans-serif;
+    font-size: 1rem;
+    margin-left: 10px;
+    transition: color 0.2s;
+}
+.logout-link:hover { color: #c39b62; }
+
+/* Main Variable Layout Content Frame */
+.content-wrapper {
+    padding: 30px;
+    max-width: 1600px;
+    margin: 0 auto;
+}
+
+/* Dashboard Metrics Row Rules */
+.metrics-row {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.metric-card {
+    flex: 1;
+    background-color: #2b170c;
+    border-radius: 16px;
+    padding: 22px 30px;
+    color: #ffffff;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+}
+
+.metric-label {
+    font-size: 0.75rem;
+    color: #baa495;
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+}
+
+.metric-value {
+    font-family: 'Oswald', sans-serif;
+    font-size: 2.2rem;
+    font-weight: 700;
+}
+
+/* Charts Containers Structure Layout */
+.charts-grid {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.chart-card {
+    background-color: #fcf8ee;
+    border-radius: 18px;
+    padding: 24px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    color: #3d2514;
+}
+
+.main-bar-chart { flex: 3; }
+.category-pie-card { flex: 1; }
+
+.chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.chart-card h3 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.25rem;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.chart-toggle-buttons {
+    display: flex;
+    background-color: #2b170c;
+    padding: 3px;
+    border-radius: 8px;
+}
+
+.btn-toggle {
+    background: none;
+    border: none;
+    color: #baa495;
+    padding: 6px 14px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.btn-toggle.active {
+    background-color: #51311b;
+    color: #ffffff;
+}
+
+/* Simulated Graphic Output Visualizations */
+.bar-chart-visualization-empty {
+    height: 180px;
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+}
+
+.empty-chart-fallback-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 0.85rem;
+    color: #a39589;
+    font-style: italic;
+    z-index: 2;
+}
+
+.bar-container-wireframe {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    height: 100%;
+    opacity: 0.15; /* Subtly tints bars back to mirror initialized state visual */
+}
+
+.mock-bar {
+    flex: 1;
+    margin: 0 8px;
+    background-color: #3d2514;
+    border-radius: 4px 4px 0 0;
+}
+
+/* Custom Styled Simulative Pie Chart Component CSS Box */
+.pie-chart-wrapper {
+    display: flex;
+    justify-content: center;
+    margin: 24px 0;
+}
+
+/* Adjusted properties to cleanly hold multi-line tracking fallback labels */
+.empty-pie-circle {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background: #e2d6c5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+    text-align: center;
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+/* Flex rules to center text items vertically stacked */
+.pie-center-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+
+.pie-percentage {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #3d2514;
+    line-height: 1;
+}
+
+.pie-fallback-note {
+    font-size: 0.68rem;
+    color: #8a7a6e;
+    font-style: italic;
+    line-height: 1.2;
+    font-weight: 500;
+}
+
+.category-legend-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.legend-item {
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #5c4d42;
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #baa495;
+}
+
+/* Bottom Metric Row Configurations */
+.bottom-grid-layout {
+    display: flex;
+    gap: 20px;
+}
+
+.products-snapshot-card {
+    flex: 3;
+    background-color: #fcf8ee;
+    border-radius: 18px;
+    padding: 24px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.section-badge {
+    display: inline-block;
+    background-color: #2b170c;
+    color: #ffffff;
+    font-family: 'Oswald', sans-serif;
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    margin-bottom: 20px;
+    letter-spacing: 0.5px;
+}
+
+.products-list-table-wireframe {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.product-item-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: #3d2514;
+    padding-bottom: 8px;
+    border-bottom: 1px dashed rgba(61, 37, 20, 0.15);
+}
+
+.product-item-row span { width: 50%; }
+
+.customer-count-card {
+    flex: 1;
+    background-color: #2b170c;
+    border-radius: 18px;
+    padding: 24px;
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+}
+
+.customer-label {
+    font-size: 0.75rem;
+    color: #baa495;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+}
+
+.customer-value {
+    font-family: 'Oswald', sans-serif;
+    font-size: 2.6rem;
+    font-weight: 700;
+}

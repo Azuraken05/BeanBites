@@ -235,6 +235,41 @@ body {
     color: var(--text-gold);
 }
 
+/* ==========================================================================
+   DYNAMIC TOAST SLIDE NOTIFICATION ALERTS MODULE STYLES
+   ========================================================================== */
+.toast-notification {
+    position: fixed;
+    top: 25px;
+    right: 25px;
+    background-color: var(--dark-brown-card);
+    color: #ebdcc5;
+    padding: 16px 26px;
+    border-radius: 14px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 500;
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-left: 5px solid var(--text-gold);
+    transform: translateX(130%);
+    transition: transform 0.35s cubic-bezier(0.68, -0.55, 0.265, 1.35);
+    z-index: 9999;
+}
+
+.toast-notification.show {
+    transform: translateX(0);
+}
+
+.toast-icon-wrapper {
+    color: var(--text-gold);
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+}
+
 /* Small Device Responsiveness layout adjustment */
 @media (max-width: 480px) {
     .signup-container {
@@ -243,5 +278,17 @@ body {
     .password-row {
         flex-direction: column;
         gap: 0;
+    }
+    .toast-notification {
+        top: auto;
+        bottom: 20px;
+        right: 20px;
+        left: 20px;
+        transform: translateY(150%);
+        border-left: none;
+        border-bottom: 4px solid var(--text-gold);
+    }
+    .toast-notification.show {
+        transform: translateY(0);
     }
 }
