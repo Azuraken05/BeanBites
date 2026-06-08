@@ -6,13 +6,15 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\DashboardController;
 
-Route::get('/register', function () {
-    return view('register');
+// Guest Protection Group (Accessible only when logged out)
+Route::middleware('guest')->group(function () {
+    Route::get('/', function () { return view('login'); })->name('login');
+    Route::get('/register', function () { return view('register'); });
+    
+    Route::post('/register', [AuthController::class, 'register']);
+    Route::post('/login', [AuthController::class, 'login']);
 });
 
-Route::post('/register', function () {
-    return redirect('/');
-});
 // Auth Security Guard Group (Accessible only when legally logged in)
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', function () { return view('dashboard'); });
@@ -23,9 +25,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/products/store', [ProductController::class, 'store'])->name('products.store');
     Route::post('/products/delete/{id}', [ProductController::class, 'destroy'])->name('products.destroy');
     Route::get('/logout', [AuthController::class, 'logout']);
-<<<<<<< HEAD
-});
-=======
     Route::get('/products/edit/{id}', [ProductController::class, 'edit'])->name('products.edit');
     Route::post('/products/update/{id}', [ProductController::class, 'update'])->name('products.update');
     Route::get('/pos', [ProductController::class, 'posIndex'])->name('pos.index');
@@ -33,4 +32,3 @@ Route::middleware('auth')->group(function () {
     Route::get('/reports', [ReportsController::class, 'index'])->name('reports.index');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
 });
->>>>>>> c8ef1ff2d23043ba8a6344a5f1f3b294556b49b8
