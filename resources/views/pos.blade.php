@@ -13,6 +13,13 @@
         <div class="products-container-box">
             <h3 class="section-title-tag">PRODUCTS</h3>
             
+            <div class="pos-search-wrapper" style="margin-bottom: 20px;">
+                <div class="search-input-container" style="position: relative; width: 100%;">
+                    <input type="text" id="posSearchInput" placeholder="Search any product globally..." onkeyup="searchAndFilterProducts()" autocomplete="off" style="width: 100%; padding: 12px 16px 12px 42px; border: none; border-radius: 12px; background-color: #ffffff; font-family: 'Poppins', sans-serif; font-size: 0.9rem; color: #3d2514; outline: none;">
+                    <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: #baa495; font-size: 0.95rem; pointer-events: none;"></i>
+                </div>
+            </div>
+            
             <div class="category-tabs-bar">
                 <button class="btn-category active" onclick="filterCategory('Drinks')">Drinks</button>
                 <button class="btn-category" onclick="filterCategory('Food')">Food</button>
@@ -20,7 +27,7 @@
             </div>
 
             <div class="products-grid-layout" id="productsGrid">
-                </div>
+            </div>
         </div>
     </div>
 
@@ -62,7 +69,7 @@
             <h2>RECEIPT</h2>
             
             <div class="receipt-body-invoice" id="receiptInvoiceItems">
-                </div>
+            </div>
 
             <div class="receipt-divider-line"></div>
             <div class="receipt-total-display">
@@ -76,174 +83,16 @@
 
 </div>
 
+<!-- Linked Externalized POS Subsystem Script Asset -->
+<script src="{{ asset('js/pos.js') }}"></script>
 <script>
-    // 1. Initialized Dummy Databasing Records for testing filter controls
-    const dummyDatabase = [
-        { id: 1, name: 'Coke', category: 'Drinks', price: 25 },
-        { id: 2, name: 'Milktea', category: 'Drinks', price: 85 },
-        { id: 3, name: 'Fruit Tea', category: 'Drinks', price: 75 },
-        { id: 4, name: 'Burger & Fries', category: 'Food', price: 120 },
-        { id: 5, name: 'Chicken Poppers', category: 'Food', price: 95 },
-        { id: 6, name: 'Clubhouse Sandwich', category: 'Food', price: 110 },
-        { id: 7, name: 'Chocolate Waffles', category: 'Desserts', price: 65 },
-        { id: 8, name: 'Coffee Frappe', category: 'Desserts', price: 115 },
-        { id: 9, name: 'Mango Cheesecake', category: 'Desserts', price: 130 }
-    ];
-
-    let currentCartState = {};
-    let activeSelectedProduct = null;
-    let currentSpinnerCount = 1;
-
-    // 2. Render and Filter Product Grid Matrix
-    function filterCategory(categoryName) {
-        // Toggle Active Button Styles
-        const tabs = document.querySelectorAll('.btn-category');
-        tabs.forEach(tab => {
-            if(tab.textContent.trim() === categoryName) tab.classList.add('active');
-            else tab.classList.remove('active');
-        });
-
-        const grid = document.getElementById('productsGrid');
-        grid.innerHTML = '';
-
-        const filteredItems = dummyDatabase.filter(item => item.category === categoryName);
-        
-        filteredItems.forEach(product => {
-            const productCard = document.createElement('div');
-            productCard.className = 'product-item-clickable-card';
-            productCard.onclick = () => openQuantityModal(product);
-            productCard.innerHTML = `
-                <div class="product-mock-image-frame"><span>Image Here</span></div>
-                <p class="product-card-title-text">${product.name}</p>
-                <p class="product-card-price-tag">₱${product.price}</p>
-            `;
-            grid.appendChild(productCard);
-        });
-    }
-
-    // 3. Quantity Spinner Controls Logic Engine
-    function openQuantityModal(product) {
-        activeSelectedProduct = product;
-        currentSpinnerCount = 1;
-        document.getElementById('modalProductTitle').textContent = product.name.toUpperCase();
-        document.getElementById('spinnerQuantityValue').textContent = currentSpinnerCount;
-        document.getElementById('quantityModal').classList.add('active');
-    }
-
-    function closeQuantityModal() {
-        document.getElementById('quantityModal').classList.remove('active');
-        activeSelectedProduct = null;
-    }
-
-    function adjustSpinner(value) {
-        currentSpinnerCount += value;
-        if(currentSpinnerCount < 1) currentSpinnerCount = 1;
-        document.getElementById('spinnerQuantityValue').textContent = currentSpinnerCount;
-    }
-
-    // 4. State Cart Calculations Engine Subsystem
-    function confirmAddToCart() {
-        if (!activeSelectedProduct) return;
-        
-        const productId = activeSelectedProduct.id;
-        if (currentCartState[productId]) {
-            currentCartState[productId].quantity += currentSpinnerCount;
-        } else {
-            currentCartState[productId] = {
-                name: activeSelectedProduct.name,
-                price: activeSelectedProduct.price,
-                quantity: currentSpinnerCount
-            };
-        }
-        
-        closeQuantityModal();
-        renderCartDashboardSubsystem();
-    }
-
-    function removeCartItem(productId) {
-        delete currentCartState[productId];
-        renderCartDashboardSubsystem();
-    }
-
-    function renderCartDashboardSubsystem() {
-        const listContainer = document.getElementById('cartItemsList');
-        const emptyNotice = document.getElementById('emptyCartNotice');
-        const checkoutBtn = document.getElementById('checkoutBtn');
-        
-        // Clear old rows except the fallback element
-        const rows = listContainer.querySelectorAll('.cart-item-row-entry');
-        rows.forEach(row => row.remove());
-
-        const keys = Object.keys(currentCartState);
-        let calculatedItemsCount = 0;
-        let calculatedSubtotal = 0;
-
-        if (keys.length === 0) {
-            emptyNotice.style.display = 'block';
-            checkoutBtn.disabled = true;
-        } else {
-            emptyNotice.style.display = 'none';
-            checkoutBtn.disabled = false;
-
-            keys.forEach(id => {
-                const item = currentCartState[id];
-                calculatedItemsCount += item.quantity;
-                calculatedSubtotal += (item.price * item.quantity);
-
-                const itemRow = document.createElement('div');
-                itemRow.className = 'cart-item-row-entry';
-                itemRow.innerHTML = `
-                    <div class="item-name-meta">
-                        <strong>${item.name}</strong>
-                        <span class="qty-badge-pill">x${item.quantity}</span>
-                    </div>
-                    <div class="item-actions-meta">
-                        <span>₱${item.price * item.quantity}</span>
-                        <button class="btn-remove-cart-item" onclick="removeCartItem(${id})"><i class="fa-solid fa-trash-can"></i></button>
-                    </div>
-                `;
-                listContainer.insertBefore(itemRow, emptyNotice);
-            });
-        }
-
-        // Output Live Values onto Dashboard
-        document.getElementById('summaryItemCount').textContent = calculatedItemsCount;
-        document.getElementById('summarySubtotal').textContent = `₱${calculatedSubtotal}`;
-        document.getElementById('summaryTotal').textContent = `₱${calculatedSubtotal}`;
-    }
-
-    // 5. Receipt Invoice Formatting & Processing System
-    function openReceiptModal() {
-        const invoiceFrame = document.getElementById('receiptInvoiceItems');
-        invoiceFrame.innerHTML = '';
-        let totalSum = 0;
-
-        Object.keys(currentCartState).forEach(id => {
-            const item = currentCartState[id];
-            totalSum += (item.price * item.quantity);
-            
-            const lineRow = document.createElement('div');
-            lineRow.className = 'receipt-invoice-line';
-            lineRow.innerHTML = `<span>${item.name} x${item.quantity}</span><span>₱${item.price * item.quantity}</span>`;
-            invoiceFrame.appendChild(lineRow);
-        });
-
-        document.getElementById('receiptTotalValue').textContent = `₱${totalSum}`;
-        document.getElementById('receiptModal').classList.add('active');
-    }
-
-    function closeReceiptModal() {
-        document.getElementById('receiptModal').classList.remove('active');
-    }
-
-    // 6. Native Driver Hardware Print Trigger Command 
-    function triggerHardwarePrint() {
-        window.print();
-    }
-
-    // Load Default Category Selection State on init
     document.addEventListener('DOMContentLoaded', () => {
-        filterCategory('Drinks');
+        // Hydrate live dataset loop values and instantiate operations
+        initializePOSEngine(
+            @json($products),
+            '{{ csrf_token() }}',
+            '{{ route("pos.checkout") }}'
+        );
     });
 </script>
 @endsection
