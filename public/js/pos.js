@@ -9,6 +9,10 @@ let currentSpinnerCount = 1;
 let checkoutUrl = '/pos/checkout';
 let csrfTokenStr = '';
 
+// NEW: Payment Flow Variables
+let selectedPaymentMethod = null;
+let cashAmountReceived = 0;
+
 /**
  * Initializes the POS Engine with data models from the backend
  * @param {Array} productsData - The live items dataset array map
@@ -272,14 +276,13 @@ function renderCartDashboardSubsystem() {
 function openReceiptModal() {
     const invoiceFrame = document.getElementById('receiptInvoiceItems');
     if (!invoiceFrame) return;
-    
+
     invoiceFrame.innerHTML = '';
     let totalSum = 0;
 
     Object.keys(currentCartState).forEach(id => {
         const item = currentCartState[id];
         totalSum += (item.price * item.quantity);
-        
         const lineRow = document.createElement('div');
         lineRow.className = 'receipt-invoice-line';
         lineRow.innerHTML = `<span>${item.name} x${item.quantity}</span><span>₱${(item.price * item.quantity).toFixed(2)}</span>`;
@@ -287,9 +290,31 @@ function openReceiptModal() {
     });
 
     const totalValEl = document.getElementById('receiptTotalValue');
-    const modalEl = document.getElementById('receiptModal');
-
+    const cashTotalEl = document.getElementById('cashTotalDisplay');
     if (totalValEl) totalValEl.textContent = `₱${totalSum.toFixed(2)}`;
+    if (cashTotalEl) cashTotalEl.textContent = `₱${totalSum.toFixed(2)}`;
+
+    // Always start at step 1
+    showPaymentStep('stepPaymentMethod');
+
+    // Reset to Cash
+    document.querySelectorAll('.payment-option').forEach(l => l.classList.remove('selected'));
+    const defaultPay = document.querySelector('input[name="payment_method"][value="cash"]');
+    if (defaultPay) { defaultPay.checked = true; defaultPay.closest('.payment-option').classList.add('selected'); }
+
+    // Reset cash fields
+    const cashInput = document.getElementById('cashAmountInput');
+    if (cashInput) cashInput.value = '';
+    const changeEl = document.getElementById('cashChangeDisplay');
+    if (changeEl) changeEl.textContent = '₱0';
+
+    // Reset bank fields
+    const bankSelect = document.getElementById('bankSelectInput');
+    if (bankSelect) bankSelect.selectedIndex = 0;
+    const bankRef = document.getElementById('bankReferenceInput');
+    if (bankRef) bankRef.value = '';
+
+    const modalEl = document.getElementById('receiptModal');
     if (modalEl) modalEl.classList.add('active');
 }
 
@@ -308,10 +333,13 @@ function triggerHardwarePrint() {
     let calculatedItemsCount = countEl ? parseInt(countEl.textContent) : 0;
     let calculatedSubtotal = subtotalEl ? parseFloat(subtotalEl.textContent.replace('₱', '')) : 0.00;
 
+const selectedPayment = document.querySelector('input[name="payment_method"]:checked')?.value || 'cash';
+
     let payloadData = {
         cart: currentCartState,
         total_amount: calculatedSubtotal,
         total_items: calculatedItemsCount,
+        payment_method: selectedPayment,
         _token: csrfTokenStr
     };
 
@@ -354,4 +382,82 @@ function triggerHardwarePrint() {
         console.error('System error sending checkout bundle maps:', err);
         alert('Could not complete checkout execution. Server database down.');
     });
+}
+/**
+ * Payment Method Selector Highlight Engine
+ */
+function highlightPayment(radio) {
+    document.querySelectorAll('.payment-option').forEach(label => {
+        label.classList.remove('selected');
+    });
+    radio.closest('.payment-option').classList.add('selected');
+}
+
+function showPaymentStep(stepId) {
+    const steps = ['stepPaymentMethod', 'stepCashPayment', 'stepGcashPayment', 'stepBankPayment', 'stepReceiptBody'];
+    steps.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.style.display = 'none';
+    });
+    const target = document.getElementById(stepId);
+    if (target) target.style.display = 'block';
+}
+
+function proceedToPaymentDetails() {
+    const selected = document.querySelector('input[name="payment_method"]:checked')?.value;
+    if (selected === 'cash') showPaymentStep('stepCashPayment');
+    else if (selected === 'gcash') showPaymentStep('stepGcashPayment');
+    else if (selected === 'bank_transfer') showPaymentStep('stepBankPayment');
+}
+
+function backToPaymentMethod() {
+    showPaymentStep('stepPaymentMethod');
+}
+
+function computeCashChange() {
+    const totalText = document.getElementById('cashTotalDisplay')?.textContent.replace('₱', '') || '0';
+    const total = parseFloat(totalText);
+    const given = parseFloat(document.getElementById('cashAmountInput')?.value) || 0;
+    const change = given - total;
+    const changeEl = document.getElementById('cashChangeDisplay');
+    if (changeEl) changeEl.textContent = `₱${change >= 0 ? change.toFixed(2) : '0.00'}`;
+}
+
+function confirmPaymentAndShowReceipt() {
+    const selected = document.querySelector('input[name="payment_method"]:checked')?.value || 'cash';
+
+    if (selected === 'cash') {
+        const total = parseFloat(document.getElementById('cashTotalDisplay')?.textContent.replace('₱', '')) || 0;
+        const given = parseFloat(document.getElementById('cashAmountInput')?.value) || 0;
+        if (given < total) {
+            alert('Cash amount is less than the total. Please enter a sufficient amount.');
+            return;
+        }
+        const change = given - total;
+
+        // Show cash details on receipt
+        const cashLine = document.getElementById('receiptCashLine');
+        const changeLine = document.getElementById('receiptChangeLine');
+        if (cashLine) { cashLine.textContent = `Cash: ₱${given.toFixed(2)}`; cashLine.style.display = 'block'; }
+        if (changeLine) { changeLine.textContent = `Change: ₱${change.toFixed(2)}`; changeLine.style.display = 'block'; }
+    } else {
+        // Hide cash lines for non-cash payments
+        const cashLine = document.getElementById('receiptCashLine');
+        const changeLine = document.getElementById('receiptChangeLine');
+        if (cashLine) cashLine.style.display = 'none';
+        if (changeLine) changeLine.style.display = 'none';
+    }
+
+    if (selected === 'bank_transfer') {
+        const bank = document.getElementById('bankSelectInput')?.value;
+        const ref = document.getElementById('bankReferenceInput')?.value.trim();
+        if (!bank) { alert('Please select a bank.'); return; }
+        if (!ref) { alert('Please enter a reference number.'); return; }
+    }
+
+    const labels = { cash: '💵 Cash', gcash: '📱 GCash', bank_transfer: '🏦 Bank Transfer' };
+    const paymentLine = document.getElementById('receiptPaymentMethodLine');
+    if (paymentLine) paymentLine.textContent = `Payment: ${labels[selected] || selected}`;
+
+    showPaymentStep('stepReceiptBody');
 }

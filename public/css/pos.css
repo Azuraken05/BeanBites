@@ -448,3 +448,63 @@
     font-weight: 400;
     opacity: 0.8;
 }
+
+/* ==========================================================================
+PAYMENT METHOD SELECTION SCREEN
+========================================================================== */
+
+.payment-method-section {
+    margin-bottom: 14px;
+}
+
+.payment-method-label {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #3b1f0e;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+}
+
+.payment-method-scroll {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 150px;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+
+/* Scrollbar styling to match the theme */
+.payment-method-scroll::-webkit-scrollbar {
+    width: 4px;
+}
+.payment-method-scroll::-webkit-scrollbar-thumb {
+    background-color: #c4a882;
+    border-radius: 4px;
+}
+
+.payment-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border: 2px solid #e0d5c8;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: border-color 0.2s, background-color 0.2s;
+    font-size: 14px;
+    color: #3b1f0e;
+    font-weight: 500;
+}
+
+.payment-option input[type="radio"] {
+    accent-color: #7c4a1e;
+    width: 15px;
+    height: 15px;
+}
+
+.payment-option.selected {
+    border-color: #7c4a1e;
+    background-color: #fdf6ee;
+}
